@@ -1,6 +1,6 @@
 import './style.css'
 
-const API_URL = 'https://Phatne.pythonanywhere.com/api/todos/';
+const API_URL = 'https://phatne.pythonanywhere.com/api/';
 
 interface Todo {
   id: number;
