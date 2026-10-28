@@ -1,6 +1,6 @@
 import './style.css'
 
-const API_URL = 'https://phatne.pythonanywhere.com/api/';
+const API_URL = 'https://Phatne.pythonanywhere.com/api'; // Thay đổi URL API của bạn tại đây
 
 interface Todo {
   id: number;
@@ -185,11 +185,11 @@ async function renderHomePage() {
     const listEl = document.querySelector('#todo-list');
     if (!listEl) return;
     
-    const filtered = allTodos.filter(t => {
-      const matchTitle = t.title.toLowerCase().includes(searchQuery.toLowerCase());
-      if (currentFilter === 'pending') return matchTitle && !t.completed;
-      if (currentFilter === 'completed') return matchTitle && t.completed;
-      return matchTitle;
+    const filtered = (Array.isArray(allTodos) ? allTodos : []).filter(t => {
+    const matchTitle = t.title.toLowerCase().includes(searchQuery.toLowerCase());
+    if (currentFilter === 'pending') return matchTitle && !t.completed;
+    if (currentFilter === 'completed') return matchTitle && t.completed;
+    return matchTitle;
     });
 
     if (filtered.length === 0) {
@@ -206,7 +206,7 @@ async function renderHomePage() {
       const dateText = t.due_date ? `📅 ${t.due_date}` : '';
 
       return `
-        <li class="task-item" style="display: flex; justify-content: space-between; align-items: center; gap: 10px;">
+        <li class="task-item" style="display: flex; justify-content: space-between; align-items: center; gap: 10px; margin-bottom: 8px; padding: 8px; background: var(--bg-main); border: 1px solid var(--border-color); border-radius: 6px;">
           <div style="flex: 1; display: flex; align-items: center; gap: 10px; overflow: hidden;">
             <span class="toggle-home-status" data-id="${t.id}" style="cursor: pointer; ${t.completed ? 'text-decoration: line-through; color: var(--text-muted);' : ''}" title="Bấm để đổi trạng thái">
               ${t.title}
@@ -227,69 +227,50 @@ async function renderHomePage() {
         const targetTodo = allTodos.find(t => t.id.toString() === id);
         if (!targetTodo) return;
 
-        await fetch(`${API_URL}${id}/`, {
+        const token = localStorage.getItem('accessToken');
+        await fetch(`${API_URL}/todos/${id}/`, {
           method: 'PATCH',
-          headers: { 'Content-Type': 'application/json' },
+          headers: { 
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+          },
           body: JSON.stringify({ completed: !targetTodo.completed })
         });
         await fetchTodosAndRender();
       });
     });
   };
-  // Định nghĩa kiểu dữ liệu cho Todo
-interface Todo {
-  id: number;
-  title: string;
-  completed: boolean;
-  priority?: string;
-  due_date?: string;
-}
-
-// Hàm tải danh sách công việc từ Django Backend
-async function fetchTodos() {
-  try {
-    const response = await fetch('https://Phatne.pythonanywhere.com/api');
-    
-    if (!response.ok) {
-      throw new Error(`Lỗi HTTP! Trạng thái: ${response.status}`);
-    }
-    
-    const data = await response.json();
-    
-    // Xử lý dữ liệu trả về (hỗ trợ cả dạng mảng trực tiếp hoặc phân trang)
-    const todos: Todo[] = Array.isArray(data) ? data : (data.results || []);
-    
-    // Gọi hàm render để hiển thị danh sách lên giao diện của bạn
-    renderTodoList(todos);
-    
-  } catch (error) {
-    console.error('Không thể kết nối tới Backend:', error);
-    const appContainer = document.getElementById('app');
-    if (appContainer) {
-      appContainer.innerHTML = '<p class="text-red-500">Lỗi tải danh sách quản lý.</p>';
-    }
-  }
-}
-
-// Hàm mẫu để hiển thị danh sách ra HTML (tùy thuộc vào giao diện hiện tại của bạn)
-function renderTodoList(todos: Todo[]) {
-  console.log("Danh sách todos nhận được từ Django:", todos);
-  // Thêm logic hiển thị HTML của bạn tại đây
-}
-
-// Tự động gọi hàm fetch khi trang web được tải xong
-document.addEventListener('DOMContentLoaded', () => {
-  fetchTodos();
-});
 
   const fetchTodosAndRender = async () => {
     try {
-      const res = await fetch(API_URL);
-      allTodos = await res.json();
+      const token = localStorage.getItem('accessToken');
+      if (!token) {
+        console.error("Lỗi: Token đang bị rỗng (null)! Hãy đăng nhập để tiếp tục.");
+        const listEl = document.querySelector('#todo-list');
+        if (listEl) listEl.innerHTML = '<li style="color: var(--accent-red); padding: 12px; text-align: center;">Chưa đăng nhập hoặc thiếu token xác thực!</li>';
+        return;
+      }
+
+      const res = await fetch(`${API_URL}/todos/`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        }
+      });
+
+      if (!res.ok) {
+        throw new Error(`Lỗi HTTP! Trạng thái: ${res.status}`);
+      }
+
+      const data = await res.json();
+      allTodos = Array.isArray(data) ? data : (data.results || []);
       renderList();
-    } catch {
+
+    } catch (error) {
+      console.error("Lỗi khi tải danh sách:", error);
       const listEl = document.querySelector('#todo-list');
-      if (listEl) listEl.innerHTML = '<li style="color: var(--accent-red);">Lỗi: Không thể kết nối tới Backend Django Server!</li>';
+      if (listEl) listEl.innerHTML = '<li style="color: var(--accent-red); padding: 12px; text-align: center;">Lỗi tải danh sách từ Django.</li>';
     }
   };
 
@@ -324,6 +305,12 @@ document.addEventListener('DOMContentLoaded', () => {
       return;
     }
 
+    const token = localStorage.getItem('accessToken');
+    if (!token) {
+      alert('Chưa có token xác thực, vui lòng đăng nhập ở Admin Panel!');
+      return;
+    }
+
     const payload: any = {
       title: title,
       completed: false,
@@ -334,15 +321,27 @@ document.addEventListener('DOMContentLoaded', () => {
       payload.due_date = dateInput.value;
     }
 
-    await fetch(API_URL, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(payload)
-    });
+    try {
+      const res = await fetch(`${API_URL}/todos/`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify(payload)
+      });
 
-    titleInput.value = '';
-    dateInput.value = '';
-    await fetchTodosAndRender();
+      if (!res.ok) {
+        throw new Error(`Lỗi HTTP! Trạng thái: ${res.status}`);
+      }
+
+      titleInput.value = '';
+      dateInput.value = '';
+      await fetchTodosAndRender();
+    } catch (error) {
+      console.error("Lỗi khi thêm task:", error);
+      alert('Thêm công việc thất bại (Kiểm tra lại quyền xác thực).');
+    }
   });
 
   await fetchTodosAndRender();
@@ -404,7 +403,6 @@ async function renderAdminPage() {
     return;
   }
 
- // Khung chứa các nút chuyển tab Admin
   contentEl.innerHTML = `
     <div class="admin-tabs" style="margin-bottom: 16px; display: flex; gap: 8px;">
       <button id="tab-stats" class="tab-btn">📊 Statistics</button>
@@ -419,7 +417,10 @@ async function renderAdminPage() {
     const tabEl = document.querySelector('#admin-tab-content');
     if (!tabEl) return;
     try {
-      const res = await fetch(API_URL);
+      const token = localStorage.getItem('accessToken');
+      const res = await fetch(`${API_URL}/todos/`, {
+        headers: { 'Authorization': `Bearer ${token}` }
+      });
       const data = await res.json();
       const todos: Todo[] = Array.isArray(data) ? data : (data.results || []);
       const total = todos.length;
@@ -456,7 +457,10 @@ async function renderAdminPage() {
     const tabEl = document.querySelector('#admin-tab-content');
     if (!tabEl) return;
     try {
-      const res = await fetch(API_URL);
+      const token = localStorage.getItem('accessToken');
+      const res = await fetch(`${API_URL}/todos/`, {
+        headers: { 'Authorization': `Bearer ${token}` }
+      });
       const data = await res.json();
       const todos: Todo[] = Array.isArray(data) ? data : (data.results || []);
       
@@ -479,28 +483,32 @@ async function renderAdminPage() {
         </ul>
       `;
 
-      // Gắn sự kiện click đổi trạng thái hoàn thành (Toggle complete)
       document.querySelectorAll('.toggle-task').forEach(item => {
         item.addEventListener('click', async (e) => {
           const id = (e.currentTarget as HTMLElement).getAttribute('data-id');
           const currentTodo = todos.find(t => t.id.toString() === id);
           if (!currentTodo) return;
 
-          await fetch(`${API_URL}${id}/`, {
+          await fetch(`${API_URL}/todos/${id}/`, {
             method: 'PATCH',
-            headers: { 'Content-Type': 'application/json' },
+            headers: { 
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${token}`
+            },
             body: JSON.stringify({ completed: !currentTodo.completed })
           });
           loadManage();
         });
       });
 
-      // Gắn sự kiện xóa task (Delete)
       document.querySelectorAll('.del-btn').forEach(btn => {
         btn.addEventListener('click', async (e) => {
           const id = (e.target as HTMLElement).getAttribute('data-id');
           if (confirm('Xác nhận xóa bản ghi này khỏi Database?')) {
-            await fetch(`${API_URL}${id}/`, { method: 'DELETE' });
+            await fetch(`${API_URL}todos/${id}/`, { 
+              method: 'DELETE',
+              headers: { 'Authorization': `Bearer ${token}` }
+            });
             loadManage();
           }
         });
@@ -532,7 +540,6 @@ async function renderAdminPage() {
       </div>
     `;
 
-    // Sự kiện lưu tiêu đề mới
     document.querySelector('#save-title-btn')?.addEventListener('click', () => {
       const titleInput = document.querySelector('#title-input') as HTMLInputElement;
       if (titleInput && titleInput.value.trim()) {
@@ -542,7 +549,6 @@ async function renderAdminPage() {
       }
     });
 
-    // Sự kiện bật/tắt bảo trì
     document.querySelector('#maintenance-check')?.addEventListener('change', (e) => {
       const isChecked = (e.target as HTMLInputElement).checked;
       localStorage.setItem('maintenanceMode', isChecked.toString());
@@ -550,12 +556,10 @@ async function renderAdminPage() {
     });
   };
 
-  // 4. Lắng nghe sự kiện chuyển qua lại giữa các Tab
   document.querySelector('#tab-stats')?.addEventListener('click', loadStats);
   document.querySelector('#tab-manage')?.addEventListener('click', loadManage);
   document.querySelector('#tab-config')?.addEventListener('click', loadConfig);
 
-  // Mặc định load tab Statistics ngay khi mở trang Admin
   loadStats();
 }
 
