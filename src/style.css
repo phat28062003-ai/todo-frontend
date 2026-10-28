@@ -124,6 +124,7 @@ h1, h2, h3, h4 {
 }
 
 /* --- DANH SÁCH TASK VÀ TAB --- */
+
 .admin-tabs {
   display: flex;
   gap: 8px;
@@ -131,6 +132,16 @@ h1, h2, h3, h4 {
   border-bottom: 1px solid var(--border-color);
   padding-bottom: 12px;
 }
+@media (max-width: 768px) {
+  .admin-tabs {
+    flex-direction: column; /* Chuyển thành xếp dọc thành cột */
+  }
+  
+  .admin-tabs .tab-btn {
+    width: 100%; /* Tràn rộng 100% màn hình điện thoại để dễ bấm */
+  }
+}
+  
 
 .tab-btn {
   background: #21262d;
