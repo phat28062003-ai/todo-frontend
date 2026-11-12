@@ -140,7 +140,7 @@ async function autoLoginDemo() {
         if (data.access) {
           localStorage.setItem('accessToken', data.access);
           localStorage.setItem('isLoggedIn', 'true');
-          showToast('Đã tự động kết nối tài khoản Demo trực tiếp Render Backend!', 'success');
+          showToast('Đã kết nối tài khoản Demo trực tiếp Render Backend!', 'success');
         }
       }
     } catch (err) {
@@ -158,28 +158,28 @@ function renderLayout() {
     <div class="app-container">
       <nav class="navbar">
         <div class="nav-links">
-          <a href="#/" class="nav-link">🏠 ~/home</a>
-          <a href="#/about" class="nav-link">ℹ️ ~/about</a>
-          <a href="#/admin" class="nav-link" style="color: var(--accent-red);">🔒 ~/admin-panel</a>
+          <a href="#/" class="nav-link">🏠 Home</a>
+          <a href="#/about" class="nav-link">ℹ️ About</a>
+          <a href="#/admin" class="nav-link" style="color: var(--accent-red);">🔒 Admin</a>
         </div>
-        <div style="display: flex; align-items: center; gap: 10px;">
-          <select id="theme-selector" class="custom-input" style="padding: 5px 8px; font-size: 12px; font-family: var(--font-mono); cursor: pointer;">
-            <option value="github" ${currentTheme === 'github' ? 'selected' : ''}>🐙 GitHub Dark</option>
-            <option value="monokai" ${currentTheme === 'monokai' ? 'selected' : ''}>💻 VS Code Monokai</option>
-            <option value="dracula" ${currentTheme === 'dracula' ? 'selected' : ''}>🧛 Dracula Theme</option>
-            <option value="matrix" ${currentTheme === 'matrix' ? 'selected' : ''}>🟢 Matrix Green</option>
+        <div class="nav-right">
+          <select id="theme-selector" class="custom-input" style="padding: 5px 8px; font-size: 11.5px; font-family: var(--font-mono); cursor: pointer;">
+            <option value="github" ${currentTheme === 'github' ? 'selected' : ''}>🐙 GitHub</option>
+            <option value="monokai" ${currentTheme === 'monokai' ? 'selected' : ''}>💻 Monokai</option>
+            <option value="dracula" ${currentTheme === 'dracula' ? 'selected' : ''}>🧛 Dracula</option>
+            <option value="matrix" ${currentTheme === 'matrix' ? 'selected' : ''}>🟢 Matrix</option>
           </select>
           <div id="auth-status"></div>
         </div>
       </nav>
 
       <div class="card-box">
-        <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-color); padding-bottom: 12px; margin-bottom: 20px; flex-wrap: wrap; gap: 10px;">
+        <div class="header-title-row">
           <h2 id="main-title" style="margin: 0; color: var(--accent-blue); font-size: 1.45rem;">
             ⚡ ${appTitle}
           </h2>
-          <span style="font-size: 11.5px; font-family: var(--font-mono); color: #3fb950; background: rgba(63, 185, 80, 0.12); border: 1px solid rgba(63, 185, 80, 0.3); padding: 3px 8px; border-radius: 12px;">
-            ● RENDER LIVE CLOUD
+          <span class="cloud-badge">
+            ● RENDER LIVE
           </span>
         </div>
         <div id="page-content"></div>
@@ -195,8 +195,8 @@ function updateAuthUI() {
 
   if (isLoggedIn) {
     authEl.innerHTML = `
-      <span style="font-family: var(--font-mono); font-size: 12px; color: var(--accent-green); margin-right: 6px;">[ROOT]</span>
-      <button id="logout-btn" class="del-btn" style="padding: 3px 8px; font-size: 11px;">Logout</button>
+      <span style="font-family: var(--font-mono); font-size: 11px; color: var(--accent-green); margin-right: 4px;">[ROOT]</span>
+      <button id="logout-btn" class="del-btn" style="padding: 3px 6px; font-size: 10.5px;">Logout</button>
     `;
     document.querySelector('#logout-btn')?.addEventListener('click', () => {
       localStorage.removeItem('isLoggedIn');
@@ -208,7 +208,7 @@ function updateAuthUI() {
   } else {
     authEl.innerHTML = `
       <button id="quick-demo-btn" class="btn-primary" style="padding: 3px 8px; font-size: 11px; background: rgba(88, 166, 255, 0.2); border: 1px solid var(--accent-blue); color: var(--accent-blue);">
-        🔑 Demo Login
+        🔑 Demo
       </button>
     `;
     document.querySelector('#quick-demo-btn')?.addEventListener('click', async () => {
@@ -257,26 +257,26 @@ async function renderHomePage() {
       <div class="progress-bar-fill" id="metric-progress-fill" style="width: 0%;"></div>
     </div>
 
-    <!-- 2. Thêm Task Mới -->
-    <div style="background: var(--bg-main); border: 1px solid var(--border-color); padding: 18px; border-radius: 10px; margin-bottom: 20px;">
-      <div style="margin-bottom: 12px;">
-        <input type="text" id="todo-input" class="custom-input" placeholder="💡 Nhập tiêu đề công việc cần làm... (nhấn Enter để thêm nhanh)" style="width: 100%; box-sizing: border-box;" />
+    <!-- 2. Thêm Task Mới (Responsive) -->
+    <div class="add-task-card">
+      <div>
+        <input type="text" id="todo-input" class="custom-input" placeholder="💡 Nhập tiêu đề công việc..." />
       </div>
-      <div style="display: flex; gap: 10px; flex-wrap: wrap; align-items: flex-end;">
-        <div style="flex: 1; min-width: 130px;">
-          <label style="font-size: 11px; color: var(--text-muted); display: block; margin-bottom: 4px; font-family: var(--font-mono);">MỨC ƯU TIÊN:</label>
-          <select id="priority-input" class="custom-input" style="width: 100%; padding: 8px;">
+      <div class="input-controls-row">
+        <div class="control-col">
+          <label class="control-label">MỨC ƯU TIÊN:</label>
+          <select id="priority-input" class="custom-input" style="padding: 8px 10px;">
             <option value="low">🟢 Thấp (Low)</option>
             <option value="medium" selected>🟡 Trung bình (Med)</option>
             <option value="high">🔴 Cao (High)</option>
           </select>
         </div>
-        <div style="flex: 1; min-width: 130px;">
-          <label style="font-size: 11px; color: var(--text-muted); display: block; margin-bottom: 4px; font-family: var(--font-mono);">HẠN CHÓT (DUE DATE):</label>
-          <input type="date" id="date-input" class="custom-input" style="width: 100%; padding: 7px; box-sizing: border-box;" />
+        <div class="control-col">
+          <label class="control-label">HẠN CHÓT:</label>
+          <input type="date" id="date-input" class="custom-input" style="padding: 7px 10px;" />
         </div>
-        <div>
-          <button id="add-btn" class="btn-primary" style="padding: 10px 20px; white-space: nowrap;">
+        <div class="control-col-btn">
+          <button id="add-btn" class="btn-primary add-submit-btn">
             + Thêm Task
           </button>
         </div>
@@ -288,7 +288,7 @@ async function renderHomePage() {
       <button id="btn-batch-complete" class="batch-btn" title="Đánh dấu tất cả công việc đã hoàn thành">
         ✓ Hoàn thành tất cả
       </button>
-      <button id="btn-batch-clear-done" class="batch-btn" title="Xóa toàn bộ task đã đánh dấu hoàn thành">
+      <button id="btn-batch-clear-done" class="batch-btn" title="Xóa toàn bộ task đã hoàn thành">
         🧹 Dọn task đã xong
       </button>
       <button id="btn-batch-refresh" class="batch-btn" title="Đồng bộ lại từ máy chủ Render">
@@ -296,29 +296,31 @@ async function renderHomePage() {
       </button>
     </div>
 
-    <!-- 4. Bộ Lọc & Tìm Kiếm & Sắp Xếp -->
-    <div style="display: flex; gap: 10px; margin-bottom: 18px; flex-wrap: wrap; align-items: center;">
-      <input type="text" id="search-input" class="custom-input" placeholder="🔍 Tìm kiếm công việc..." style="flex: 1; min-width: 180px;" />
+    <!-- 4. Bộ Lọc & Tìm Kiếm & Sắp Xếp (Responsive) -->
+    <div class="filter-search-container">
+      <input type="text" id="search-input" class="custom-input search-input-field" placeholder="🔍 Tìm kiếm công việc..." />
       
-      <div style="display: flex; gap: 6px; flex-wrap: wrap;">
-        <button class="filter-btn tab-btn active" data-filter="all">Tất cả</button>
-        <button class="filter-btn tab-btn" data-filter="pending">Đang chờ</button>
-        <button class="filter-btn tab-btn" data-filter="completed">Đã xong</button>
-        <button class="filter-btn tab-btn" data-filter="high">🔴 Ưu tiên</button>
-      </div>
+      <div class="filter-sort-row">
+        <div class="filter-chips-group">
+          <button class="filter-btn tab-btn active" data-filter="all">Tất cả</button>
+          <button class="filter-btn tab-btn" data-filter="pending">Đang chờ</button>
+          <button class="filter-btn tab-btn" data-filter="completed">Đã xong</button>
+          <button class="filter-btn tab-btn" data-filter="high">🔴 Ưu tiên</button>
+        </div>
 
-      <select id="sort-select" class="custom-input" style="padding: 7px 10px; font-size: 12px; cursor: pointer;">
-        <option value="newest">🕒 Mới nhất</option>
-        <option value="oldest">⏳ Cũ nhất</option>
-        <option value="priority">🔥 Ưu tiên cao</option>
-        <option value="duedate">📅 Hạn gần nhất</option>
-      </select>
+        <select id="sort-select" class="custom-input sort-dropdown">
+          <option value="newest">🕒 Mới nhất</option>
+          <option value="oldest">⏳ Cũ nhất</option>
+          <option value="priority">🔥 Ưu tiên</option>
+          <option value="duedate">📅 Hạn chót</option>
+        </select>
+      </div>
     </div>
 
     <!-- 5. Danh Sách Công Việc -->
     <ul id="todo-list" style="padding-left: 0; list-style: none; margin: 0;">
       <li style="color: var(--text-muted); padding: 16px; text-align: center; font-family: var(--font-mono);">
-        ⚡ Đang kết nối trực tiếp đến cơ sở dữ liệu Render...
+        ⚡ Đang tải dữ liệu từ máy chủ Render...
       </li>
     </ul>
   `;
@@ -378,7 +380,7 @@ async function renderHomePage() {
 
     if (filtered.length === 0) {
       listEl.innerHTML = `
-        <li style="color: var(--text-muted); padding: 24px; text-align: center; font-family: var(--font-mono); background: var(--bg-main); border: 1px dashed var(--border-color); border-radius: 8px;">
+        <li style="color: var(--text-muted); padding: 22px 14px; text-align: center; font-family: var(--font-mono); background: var(--bg-main); border: 1px dashed var(--border-color); border-radius: 8px; font-size: 13px;">
           ✨ Không có công việc nào phù hợp với bộ lọc hiện tại.
         </li>
       `;
@@ -388,32 +390,39 @@ async function renderHomePage() {
     listEl.innerHTML = filtered.map(t => {
       let priorityBadge = '';
       if (t.priority === 'high') {
-        priorityBadge = '<span class="badge-high" style="color: var(--accent-red); font-size: 10.5px; border: 1px solid var(--accent-red); padding: 2px 6px; border-radius: 4px; font-family: var(--font-mono); font-weight: 700;">HIGH</span>';
+        priorityBadge = '<span class="badge-high" style="color: var(--accent-red); font-size: 10px; border: 1px solid var(--accent-red); padding: 1px 5px; border-radius: 4px; font-family: var(--font-mono); font-weight: 700;">HIGH</span>';
       } else if (t.priority === 'medium') {
-        priorityBadge = '<span style="color: var(--accent-orange); font-size: 10.5px; border: 1px solid var(--accent-orange); padding: 2px 6px; border-radius: 4px; font-family: var(--font-mono);">MED</span>';
+        priorityBadge = '<span style="color: var(--accent-orange); font-size: 10px; border: 1px solid var(--accent-orange); padding: 1px 5px; border-radius: 4px; font-family: var(--font-mono);">MED</span>';
       } else {
-        priorityBadge = '<span style="color: var(--accent-green); font-size: 10.5px; border: 1px solid var(--accent-green); padding: 2px 6px; border-radius: 4px; font-family: var(--font-mono);">LOW</span>';
+        priorityBadge = '<span style="color: var(--accent-green); font-size: 10px; border: 1px solid var(--accent-green); padding: 1px 5px; border-radius: 4px; font-family: var(--font-mono);">LOW</span>';
       }
 
       const dueBadge = formatDueDate(t.due_date);
 
       return `
         <li class="task-item ${t.completed ? 'is-completed' : ''}" data-task-id="${t.id}">
-          <!-- Checkbox & Tiêu đề -->
-          <div style="flex: 1; display: flex; align-items: center; gap: 12px; overflow: hidden;">
-            <div class="task-checkbox ${t.completed ? 'checked' : ''}" data-id="${t.id}" title="${t.completed ? 'Đánh dấu chưa hoàn thành' : 'Đánh dấu hoàn thành'}"></div>
-            <span class="task-title-text" data-id="${t.id}" style="cursor: pointer; font-size: 14px; word-break: break-word; ${t.completed ? 'text-decoration: line-through; color: var(--text-muted);' : 'color: var(--text-main); font-weight: 500;'}" title="Nhấn để đổi trạng thái">
-              ${t.title}
-            </span>
-          </div>
+          <div class="task-main-row">
+            <!-- 1. Cột Checkbox -->
+            <div class="task-check-wrap">
+              <div class="task-checkbox ${t.completed ? 'checked' : ''}" data-id="${t.id}" title="${t.completed ? 'Đánh dấu chưa hoàn thành' : 'Đánh dấu hoàn thành'}"></div>
+            </div>
 
-          <!-- Badges & Thao tác -->
-          <div style="display: flex; align-items: center; gap: 8px; flex-shrink: 0;">
-            ${priorityBadge}
-            ${dueBadge}
-            
-            <button class="action-icon-btn btn-edit" data-id="${t.id}" title="Chỉnh sửa tên công việc">✏️</button>
-            <button class="action-icon-btn btn-delete" data-id="${t.id}" title="Xóa công việc này">🗑️</button>
+            <!-- 2. Cột Tiêu đề & Badges (Tự động xuống dòng mềm mại trên mobile) -->
+            <div class="task-content">
+              <div class="task-title-text" data-id="${t.id}" style="${t.completed ? 'text-decoration: line-through; color: var(--text-muted);' : ''}" title="Nhấn để đổi trạng thái">
+                ${t.title}
+              </div>
+              <div class="task-meta-row">
+                ${priorityBadge}
+                ${dueBadge}
+              </div>
+            </div>
+
+            <!-- 3. Cột Nút Thao tác -->
+            <div class="task-actions">
+              <button class="action-icon-btn btn-edit" data-id="${t.id}" title="Chỉnh sửa tên công việc">✏️</button>
+              <button class="action-icon-btn btn-delete" data-id="${t.id}" title="Xóa công việc này">🗑️</button>
+            </div>
           </div>
         </li>
       `;
@@ -559,7 +568,7 @@ async function renderHomePage() {
       const listEl = document.querySelector('#todo-list');
       if (listEl) {
         listEl.innerHTML = `
-          <li style="color: var(--accent-red); padding: 18px; text-align: center; background: rgba(248, 81, 73, 0.1); border: 1px solid var(--accent-red); border-radius: 6px;">
+          <li style="color: var(--accent-red); padding: 18px; text-align: center; background: rgba(248, 81, 73, 0.1); border: 1px solid var(--accent-red); border-radius: 6px; font-size: 13px;">
             ⚠️ Không thể kết nối tới cơ sở dữ liệu Render. Đang khởi động lại dịch vụ...
           </li>
         `;
@@ -715,26 +724,26 @@ function renderAboutPage() {
   const contentEl = document.querySelector('#page-content');
   if (!contentEl) return;
   contentEl.innerHTML = `
-    <h3 style="font-family: var(--font-mono); color: var(--accent-blue); margin-top: 0;">// System Architecture & Tech Stack</h3>
-    <p style="color: var(--text-muted); line-height: 1.7; font-size: 14px;">
+    <h3 style="font-family: var(--font-mono); color: var(--accent-blue); margin-top: 0; font-size: 1.2rem;">// System Architecture & Tech Stack</h3>
+    <p style="color: var(--text-muted); line-height: 1.6; font-size: 13.5px;">
       Ứng dụng quản lý công việc Todo Full-stack được xây dựng theo kiến trúc phân tách hoàn toàn (Decoupled Single Page Application).
     </p>
 
-    <div style="background: var(--bg-main); border: 1px solid var(--border-color); padding: 18px; border-radius: 8px; margin: 18px 0; font-family: var(--font-mono);">
-      <div style="margin-bottom: 12px; color: var(--accent-green); font-weight: 700;">🌐 ARCHITECTURE SPECIFICATION:</div>
-      <ul style="line-height: 2; margin: 0; padding-left: 20px; font-size: 13.5px; color: var(--text-main);">
-        <li><strong style="color: var(--accent-blue);">Frontend:</strong> Vite 8, TypeScript 5, Vanilla SPA Router, CSS Variables IT Themes.</li>
-        <li><strong style="color: var(--accent-orange);">Backend:</strong> Python 3.11, Django REST Framework, SimpleJWT Auth, CORS Middleware.</li>
+    <div style="background: var(--bg-main); border: 1px solid var(--border-color); padding: 16px; border-radius: 8px; margin: 16px 0; font-family: var(--font-mono);">
+      <div style="margin-bottom: 10px; color: var(--accent-green); font-weight: 700; font-size: 13px;">🌐 ARCHITECTURE SPECIFICATION:</div>
+      <ul style="line-height: 1.9; margin: 0; padding-left: 18px; font-size: 13px; color: var(--text-main);">
+        <li><strong style="color: var(--accent-blue);">Frontend:</strong> Vite 8, TypeScript 5, Vanilla SPA Router, Responsive CSS.</li>
+        <li><strong style="color: var(--accent-orange);">Backend:</strong> Python 3.11, Django REST Framework, SimpleJWT Auth.</li>
         <li><strong style="color: #c084fc);">Database:</strong> SQLite / PostgreSQL.</li>
-        <li><strong style="color: var(--accent-green);">Hosting:</strong> Vercel Edge Network (Frontend) & Render Cloud (Backend).</li>
+        <li><strong style="color: var(--accent-green);">Hosting:</strong> Vercel Edge Network & Render Cloud.</li>
       </ul>
     </div>
 
-    <div style="display: flex; gap: 10px; margin-top: 20px;">
-      <a href="https://github.com/phat28062003-ai/todo-frontend" target="_blank" rel="noreferrer" class="btn-primary" style="text-decoration: none; display: inline-flex; align-items: center; gap: 6px;">
+    <div style="display: flex; gap: 8px; margin-top: 18px; flex-wrap: wrap;">
+      <a href="https://github.com/phat28062003-ai/todo-frontend" target="_blank" rel="noreferrer" class="btn-primary" style="text-decoration: none; font-size: 12.5px;">
         🐙 GitHub Frontend
       </a>
-      <a href="https://github.com/phat28062003-ai/my-portfolio-fullstack" target="_blank" rel="noreferrer" class="tab-btn" style="text-decoration: none; display: inline-flex; align-items: center; gap: 6px;">
+      <a href="https://github.com/phat28062003-ai/my-portfolio-fullstack" target="_blank" rel="noreferrer" class="tab-btn" style="text-decoration: none; font-size: 12.5px;">
         🚀 Portfolio Hub
       </a>
     </div>
@@ -748,15 +757,15 @@ async function renderAdminPage() {
 
   if (!isLoggedIn) {
     contentEl.innerHTML = `
-      <div style="max-width: 420px; margin: 20px auto; text-align: center; background: var(--bg-main); border: 1px solid var(--border-color); padding: 28px; border-radius: 10px;">
-        <h3 style="color: var(--accent-red); margin-top: 0;">🔒 Authentication Required</h3>
-        <p style="color: var(--text-muted); font-size: 13px; line-height: 1.6; margin-bottom: 20px;">
+      <div style="max-width: 420px; margin: 10px auto; text-align: center; background: var(--bg-main); border: 1px solid var(--border-color); padding: 22px 16px; border-radius: 10px;">
+        <h3 style="color: var(--accent-red); margin-top: 0; font-size: 1.2rem;">🔒 Authentication Required</h3>
+        <p style="color: var(--text-muted); font-size: 12.5px; line-height: 1.5; margin-bottom: 16px;">
           Đăng nhập bằng tài khoản quản trị viên JWT hoặc nhấn Đăng nhập Demo bên dưới.
         </p>
-        <input type="text" id="username" class="custom-input" placeholder="Tên đăng nhập (mặc định: admin hoặc demo)" style="margin-bottom: 12px; width: 100%; box-sizing: border-box;" /><br/>
-        <input type="password" id="password" class="custom-input" placeholder="Mật khẩu" style="margin-bottom: 16px; width: 100%; box-sizing: border-box;" /><br/>
-        <button id="login-btn" class="btn-primary" style="width: 100%; margin-bottom: 12px;">Đăng Nhập (JWT Authenticate)</button>
-        <button id="demo-quick-btn" class="tab-btn" style="width: 100%; border-color: var(--accent-blue); color: var(--accent-blue);">🚀 Vào Nhanh Bằng Tài Khoản Demo</button>
+        <input type="text" id="username" class="custom-input" placeholder="Tên đăng nhập (admin / demo)" style="margin-bottom: 10px;" /><br/>
+        <input type="password" id="password" class="custom-input" placeholder="Mật khẩu" style="margin-bottom: 14px;" /><br/>
+        <button id="login-btn" class="btn-primary" style="width: 100%; margin-bottom: 10px; justify-content: center; padding: 11px;">Đăng Nhập (JWT Authenticate)</button>
+        <button id="demo-quick-btn" class="tab-btn" style="width: 100%; border-color: var(--accent-blue); color: var(--accent-blue); padding: 10px;">🚀 Vào Nhanh Bằng Tài Khoản Demo</button>
       </div>
     `;
 
@@ -792,7 +801,7 @@ async function renderAdminPage() {
   }
 
   contentEl.innerHTML = `
-    <div class="admin-tabs" style="margin-bottom: 16px; display: flex; gap: 8px;">
+    <div class="admin-tabs" style="margin-bottom: 16px; display: flex; gap: 6px;">
       <button id="tab-stats" class="tab-btn active">📊 Statistics</button>
       <button id="tab-manage" class="tab-btn">📝 Task Management</button>
       <button id="tab-config" class="tab-btn">⚙️ Configurations</button>
@@ -819,17 +828,17 @@ async function renderAdminPage() {
       const percent = total > 0 ? Math.round((completed / total) * 100) : 0;
 
       tabEl.innerHTML = `
-        <h4 style="font-family: var(--font-mono); margin-top: 0;">// System Resource & Task Metrics</h4>
-        <div style="background: var(--bg-main); border: 1px solid var(--border-color); padding: 18px; border-radius: 8px; margin-bottom: 20px; font-family: var(--font-mono);">
-          <div style="display: flex; justify-content: space-between; font-size: 13px; margin-bottom: 8px;">
+        <h4 style="font-family: var(--font-mono); margin-top: 0; font-size: 1.1rem;">// System Resource & Task Metrics</h4>
+        <div style="background: var(--bg-main); border: 1px solid var(--border-color); padding: 14px; border-radius: 8px; margin-bottom: 16px; font-family: var(--font-mono);">
+          <div style="display: flex; justify-content: space-between; font-size: 12.5px; margin-bottom: 6px;">
             <span>COMPLETION_RATE:</span>
             <span style="color: var(--accent-green); font-weight: 700;">${percent}%</span>
           </div>
-          <div style="width: 100%; background: var(--border-color); height: 10px; border-radius: 5px; overflow: hidden;">
+          <div style="width: 100%; background: var(--border-color); height: 8px; border-radius: 4px; overflow: hidden;">
             <div style="width: ${percent}%; background: linear-gradient(90deg, var(--accent-blue), var(--accent-green)); height: 100%; transition: width 0.4s ease;"></div>
           </div>
         </div>
-        <ul style="font-family: var(--font-mono); line-height: 2.2; list-style: none; padding-left: 0; font-size: 14px;">
+        <ul style="font-family: var(--font-mono); line-height: 2.1; list-style: none; padding-left: 0; font-size: 13.5px;">
           <li>📌 Tổng số công việc xử lý: <strong style="color: var(--accent-blue);">${total}</strong></li>
           <li>✅ Công việc đã hoàn thành: <strong style="color: var(--accent-green);">${completed}</strong></li>
           <li>⏳ Công việc đang chờ: <strong style="color: var(--accent-orange);">${pending}</strong></li>
@@ -860,11 +869,11 @@ async function renderAdminPage() {
       }
 
       tabEl.innerHTML = `
-        <h4 style="font-family: var(--font-mono); margin-top: 0;">Database Records (${todos.length} tasks):</h4>
-        <ul style="padding-left: 0; list-style: none; max-height: 400px; overflow-y: auto;">
+        <h4 style="font-family: var(--font-mono); margin-top: 0; font-size: 1.1rem;">Database Records (${todos.length} tasks):</h4>
+        <ul style="padding-left: 0; list-style: none; max-height: 400px; overflow-y: auto; margin: 0;">
           ${todos.map(t => `
             <li class="task-item" style="margin-bottom: 8px;">
-              <span class="toggle-task" data-id="${t.id}" style="cursor: pointer; flex: 1; ${t.completed ? 'text-decoration: line-through; color: var(--text-muted);' : ''}">
+              <span class="toggle-task" data-id="${t.id}" style="cursor: pointer; flex: 1; font-size: 13px; ${t.completed ? 'text-decoration: line-through; color: var(--text-muted);' : ''}">
                 ${t.title} [${(t.priority || 'med').toUpperCase()}] ${t.completed ? '🟢 [DONE]' : '⏳ [PENDING]'}
               </span>
               <button class="del-btn btn-admin-del" data-id="${t.id}">Delete</button>
@@ -913,18 +922,18 @@ async function renderAdminPage() {
     const currentTitle = localStorage.getItem('appTitle') || 'IT_Dashboard // Todo-Manager';
 
     tabEl.innerHTML = `
-      <h4 style="font-family: var(--font-mono); margin-top: 0;">System Settings:</h4>
-      <div style="margin-bottom: 20px;">
-        <label style="font-size: 13px; color: var(--text-muted); display: block; margin-bottom: 6px;">Application Title:</label>
+      <h4 style="font-family: var(--font-mono); margin-top: 0; font-size: 1.1rem;">System Settings:</h4>
+      <div style="margin-bottom: 16px;">
+        <label style="font-size: 12.5px; color: var(--text-muted); display: block; margin-bottom: 6px;">Application Title:</label>
         <div style="display: flex; gap: 8px;">
           <input type="text" id="title-input" class="custom-input" value="${currentTitle}" style="flex: 1;" />
-          <button id="save-title-btn" class="btn-primary">Save</button>
+          <button id="save-title-btn" class="btn-primary" style="white-space: nowrap;">Save</button>
         </div>
       </div>
-      <div style="background: var(--bg-main); border: 1px solid var(--border-color); padding: 14px; border-radius: 6px;">
-        <label style="cursor: pointer; font-family: var(--font-mono); font-size: 14px; display: flex; align-items: center; gap: 10px;">
+      <div style="background: var(--bg-main); border: 1px solid var(--border-color); padding: 12px; border-radius: 6px;">
+        <label style="cursor: pointer; font-family: var(--font-mono); font-size: 13px; display: flex; align-items: center; gap: 8px;">
           <input type="checkbox" id="maintenance-check" ${isMaintenance ? 'checked' : ''} style="width: 18px; height: 18px;" />
-          <span>Kích hoạt chế độ bảo trì hệ thống (Maintenance Mode)</span>
+          <span>Kích hoạt chế độ bảo trì hệ thống</span>
         </label>
       </div>
     `;

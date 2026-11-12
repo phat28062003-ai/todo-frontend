@@ -1,4 +1,4 @@
-/* --- TÔNG MÀU CHUYÊN NGHIỆP: IT / DEVELOPER DARK THEME --- */
+/* --- TÔNG MÀU CHUYÊN NGHIỆP: IT / DEVELOPER THEMES --- */
 :root {
   --bg-color: #0d1117;
   --card-bg: #161b22;
@@ -12,6 +12,10 @@
   --font-mono: 'Fira Code', Consolas, Monaco, monospace;
 }
 
+* {
+  box-sizing: border-box;
+}
+
 body {
   margin: 0;
   padding: 0;
@@ -19,31 +23,33 @@ body {
   background-color: var(--bg-color);
   color: var(--text-main);
   min-height: 100vh;
+  -webkit-tap-highlight-color: transparent;
 }
 
 /* Khung ứng dụng chính */
 .app-container {
   max-width: 760px;
-  margin: 30px auto;
+  margin: 25px auto;
   padding: 0 16px;
 }
 
-/* --- THANH NAVBAR PHONG CÁCH DASHBOARD LẬP TRÌNH --- */
+/* --- THANH NAVBAR RESPONSIVE --- */
 .navbar {
   display: flex;
   justify-content: space-between;
   align-items: center;
   background: var(--card-bg);
   border: 1px solid var(--border-color);
-  padding: 12px 18px;
+  padding: 10px 16px;
   border-radius: 10px;
-  margin-bottom: 20px;
+  margin-bottom: 18px;
   box-shadow: 0 4px 14px rgba(0, 0, 0, 0.4);
+  gap: 10px;
 }
 
 .nav-links {
   display: flex;
-  gap: 8px;
+  gap: 6px;
 }
 
 .nav-link {
@@ -51,10 +57,13 @@ body {
   color: var(--text-muted);
   font-weight: 600;
   font-size: 13px;
-  padding: 6px 12px;
+  padding: 6px 10px;
   border-radius: 6px;
   transition: all 0.2s ease;
   font-family: var(--font-mono);
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
 }
 
 .nav-link:hover, .nav-link.active {
@@ -62,12 +71,18 @@ body {
   background: rgba(88, 166, 255, 0.12);
 }
 
+.nav-right {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
 /* --- KHUNG CHỨA NỘI DUNG (CARD BOX) --- */
 .card-box {
   background: var(--card-bg);
   border: 1px solid var(--border-color);
   border-radius: 12px;
-  padding: 26px;
+  padding: 24px;
   box-shadow: 0 8px 30px rgba(0, 0, 0, 0.5);
   animation: fadeIn 0.25s ease-in-out;
 }
@@ -82,19 +97,43 @@ h1, h2, h3, h4 {
   font-family: var(--font-mono);
 }
 
+.header-title-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid var(--border-color);
+  padding-bottom: 12px;
+  margin-bottom: 18px;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.cloud-badge {
+  font-size: 11px;
+  font-family: var(--font-mono);
+  color: #3fb950;
+  background: rgba(63, 185, 80, 0.12);
+  border: 1px solid rgba(63, 185, 80, 0.3);
+  padding: 3px 8px;
+  border-radius: 12px;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
 /* --- LIVE METRICS GRID --- */
 .metrics-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
-  gap: 10px;
-  margin-bottom: 12px;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+  margin-bottom: 10px;
 }
 
 .metric-card {
   background: var(--bg-main, #0d1117);
   border: 1px solid var(--border-color);
   border-radius: 8px;
-  padding: 12px;
+  padding: 10px 8px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -109,18 +148,20 @@ h1, h2, h3, h4 {
 }
 
 .metric-label {
-  font-size: 10.5px;
+  font-size: 10px;
   color: var(--text-muted);
   font-family: var(--font-mono);
   letter-spacing: 0.5px;
   margin-bottom: 4px;
+  font-weight: 600;
 }
 
 .metric-val {
-  font-size: 20px;
+  font-size: 19px;
   font-weight: 700;
   font-family: var(--font-mono);
   color: var(--text-main);
+  line-height: 1.2;
 }
 
 .text-green { color: var(--accent-green) !important; }
@@ -130,11 +171,11 @@ h1, h2, h3, h4 {
 
 .progress-bar-container {
   width: 100%;
-  height: 8px;
+  height: 6px;
   background: rgba(255, 255, 255, 0.06);
   border-radius: 4px;
   overflow: hidden;
-  margin-bottom: 22px;
+  margin-bottom: 18px;
   border: 1px solid var(--border-color);
 }
 
@@ -145,14 +186,58 @@ h1, h2, h3, h4 {
   box-shadow: 0 0 8px var(--accent-green);
 }
 
+/* --- FORM THÊM TASK --- */
+.add-task-card {
+  background: var(--bg-main, #0d1117);
+  border: 1px solid var(--border-color);
+  padding: 16px;
+  border-radius: 10px;
+  margin-bottom: 16px;
+}
+
+.input-controls-row {
+  display: flex;
+  gap: 8px;
+  align-items: flex-end;
+  margin-top: 10px;
+  flex-wrap: wrap;
+}
+
+.control-col {
+  flex: 1;
+  min-width: 120px;
+}
+
+.control-col-btn {
+  flex-shrink: 0;
+}
+
+.control-label {
+  font-size: 11px;
+  color: var(--text-muted);
+  display: block;
+  margin-bottom: 4px;
+  font-family: var(--font-mono);
+  font-weight: 600;
+}
+
 /* --- BATCH ACTION BAR --- */
 .batch-bar {
   display: flex;
-  gap: 8px;
-  flex-wrap: wrap;
-  margin-bottom: 18px;
-  padding-bottom: 14px;
+  gap: 6px;
+  margin-bottom: 14px;
+  padding-bottom: 12px;
   border-bottom: 1px dashed var(--border-color);
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.batch-bar::-webkit-scrollbar {
+  height: 4px;
+}
+.batch-bar::-webkit-scrollbar-thumb {
+  background: var(--border-color);
+  border-radius: 2px;
 }
 
 .batch-btn {
@@ -161,9 +246,11 @@ h1, h2, h3, h4 {
   border: 1px solid var(--border-color);
   padding: 6px 12px;
   border-radius: 6px;
-  font-size: 12px;
+  font-size: 11.5px;
   font-family: var(--font-mono);
   cursor: pointer;
+  white-space: nowrap;
+  flex-shrink: 0;
   transition: all 0.2s ease;
 }
 
@@ -173,9 +260,37 @@ h1, h2, h3, h4 {
   border-color: var(--accent-blue);
 }
 
-/* --- FORM & INPUT PHONG CÁCH IDE --- */
+/* --- BỘ LỌC & TÌM KIẾM --- */
+.filter-search-container {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.filter-sort-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.filter-chips-group {
+  display: flex;
+  gap: 6px;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.filter-chips-group::-webkit-scrollbar {
+  display: none;
+}
+
+/* --- FORM & INPUT --- */
 .custom-input {
-  padding: 10px 14px;
+  width: 100%;
+  padding: 9px 12px;
   background: #0d1117;
   border: 1px solid var(--border-color);
   border-radius: 6px;
@@ -195,11 +310,15 @@ h1, h2, h3, h4 {
   background: #238636;
   color: white;
   border: none;
-  padding: 10px 18px;
+  padding: 9px 16px;
   border-radius: 6px;
   font-weight: 600;
   cursor: pointer;
   font-family: var(--font-mono);
+  font-size: 13px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
   transition: background 0.2s, transform 0.15s;
 }
 
@@ -207,16 +326,16 @@ h1, h2, h3, h4 {
   background: #2ea043;
 }
 
-/* --- DANH SÁCH TASK VÀ TAB --- */
 .tab-btn {
   background: #21262d;
   color: var(--text-main);
   border: 1px solid var(--border-color);
-  padding: 8px 14px;
+  padding: 6px 12px;
   border-radius: 6px;
   cursor: pointer;
   font-family: var(--font-mono);
-  font-size: 12.5px;
+  font-size: 12px;
+  white-space: nowrap;
   transition: all 0.2s;
 }
 
@@ -231,23 +350,20 @@ h1, h2, h3, h4 {
   border-color: var(--accent-blue) !important;
 }
 
+/* --- DANH SÁCH TASK ITEM (RESPONSIVE CHUẨN ĐIỆN THOẠI) --- */
 .task-item {
   background: var(--bg-main, #0d1117);
   border: 1px solid var(--border-color);
   padding: 12px 14px;
-  margin-bottom: 10px;
+  margin-bottom: 8px;
   border-radius: 8px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 12px;
   animation: taskSlideIn 0.25s cubic-bezier(0.16, 1, 0.3, 1);
   transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
 .task-item:hover {
   border-color: var(--accent-blue);
-  transform: translateX(3px);
+  transform: translateX(2px);
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
 }
 
@@ -256,18 +372,28 @@ h1, h2, h3, h4 {
   background: rgba(0, 0, 0, 0.2);
 }
 
-/* Custom Checkbox */
+.task-main-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  width: 100%;
+}
+
+.task-check-wrap {
+  padding-top: 2px;
+  flex-shrink: 0;
+}
+
 .task-checkbox {
-  width: 18px;
-  height: 18px;
-  border-radius: 4px;
+  width: 20px;
+  height: 20px;
+  border-radius: 5px;
   border: 1.5px solid var(--border-color);
   background: rgba(255, 255, 255, 0.05);
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  flex-shrink: 0;
   transition: all 0.2s ease;
 }
 
@@ -284,20 +410,56 @@ h1, h2, h3, h4 {
 .task-checkbox.checked::after {
   content: '✓';
   color: white;
-  font-size: 12px;
+  font-size: 13px;
   font-weight: 800;
 }
 
-/* Action Icon Buttons */
+.task-content {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.task-title-text {
+  font-size: 14px;
+  line-height: 1.45;
+  color: var(--text-main);
+  word-break: break-word;
+  cursor: pointer;
+  font-weight: 500;
+  transition: color 0.2s ease;
+}
+
+.task-meta-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.task-actions {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  flex-shrink: 0;
+}
+
 .action-icon-btn {
   background: transparent;
   border: 1px solid transparent;
   color: var(--text-muted);
-  padding: 4px 6px;
-  border-radius: 4px;
+  padding: 6px 8px;
+  border-radius: 6px;
   cursor: pointer;
-  font-size: 13px;
+  font-size: 13.5px;
   transition: all 0.2s ease;
+  min-width: 32px;
+  min-height: 32px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .action-icon-btn:hover {
@@ -385,13 +547,14 @@ h1, h2, h3, h4 {
 /* Toast Notification */
 .toast-container {
   position: fixed;
-  top: 20px;
-  right: 20px;
+  top: 16px;
+  right: 16px;
   z-index: 10000;
   display: flex;
   flex-direction: column;
   gap: 8px;
   pointer-events: none;
+  max-width: 90vw;
 }
 
 .toast-msg {
@@ -399,13 +562,13 @@ h1, h2, h3, h4 {
   background: #161b22;
   border: 1px solid var(--border-color);
   color: var(--text-main);
-  padding: 10px 16px;
+  padding: 10px 14px;
   border-radius: 8px;
-  font-size: 13px;
+  font-size: 12.5px;
   font-family: var(--font-mono);
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 8px;
   box-shadow: 0 6px 20px rgba(0, 0, 0, 0.5);
   animation: toastSlideIn 0.25s ease-out;
   transition: opacity 0.3s ease, transform 0.3s ease;
@@ -431,7 +594,7 @@ h1, h2, h3, h4 {
   }
 }
 
-/* Hiệu ứng pháo hoa mini confetti */
+/* Confetti */
 .confetti-particle {
   position: fixed;
   width: 6px;
@@ -453,15 +616,148 @@ h1, h2, h3, h4 {
   }
 }
 
-@media (max-width: 600px) {
+/* --- MOBILE SPECIFIC OVERRIDES (< 640px) --- */
+@media (max-width: 640px) {
   .app-container {
     padding: 0 10px;
-    margin: 15px auto;
+    margin: 12px auto;
   }
+
+  .navbar {
+    flex-direction: column;
+    align-items: stretch;
+    padding: 8px 10px;
+    gap: 8px;
+    margin-bottom: 14px;
+  }
+
+  .nav-links {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .nav-link {
+    flex: 1;
+    text-align: center;
+    padding: 6px 4px;
+    font-size: 12px;
+    justify-content: center;
+  }
+
+  .nav-right {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .nav-right .custom-input {
+    max-width: 140px;
+    padding: 5px 8px;
+    font-size: 11px;
+  }
+
   .card-box {
-    padding: 18px 14px;
+    padding: 16px 12px;
+    border-radius: 10px;
   }
+
+  .header-title-row h2 {
+    font-size: 1.25rem !important;
+  }
+
   .metrics-grid {
     grid-template-columns: repeat(2, 1fr);
+    gap: 6px;
+  }
+
+  .metric-card {
+    padding: 8px 6px;
+  }
+
+  .metric-label {
+    font-size: 9.5px;
+  }
+
+  .metric-val {
+    font-size: 17px;
+  }
+
+  .input-controls-row {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 8px;
+  }
+
+  .control-col {
+    width: 100%;
+    min-width: 0;
+  }
+
+  .control-col-btn {
+    width: 100%;
+  }
+
+  .btn-primary.add-submit-btn {
+    width: 100%;
+    justify-content: center;
+    padding: 11px;
+    font-size: 14px;
+  }
+
+  .filter-sort-row {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 8px;
+  }
+
+  .filter-chips-group {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .filter-btn {
+    flex: 1;
+    text-align: center;
+    padding: 7px 4px;
+    font-size: 11px;
+  }
+
+  .sort-dropdown {
+    width: 100%;
+    padding: 8px 10px;
+  }
+
+  .task-item {
+    padding: 10px 10px;
+  }
+
+  .task-main-row {
+    gap: 10px;
+  }
+
+  .task-title-text {
+    font-size: 13.5px;
+  }
+
+  .task-checkbox {
+    width: 22px;
+    height: 22px;
+  }
+
+  .action-icon-btn {
+    padding: 7px 8px;
+    font-size: 14px;
+    min-width: 34px;
+    min-height: 34px;
+  }
+
+  .admin-tabs {
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .admin-tabs .tab-btn {
+    width: 100%;
+    text-align: center;
+    padding: 9px;
   }
 }
