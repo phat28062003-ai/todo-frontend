@@ -23,9 +23,9 @@ body {
 
 /* Khung ứng dụng chính */
 .app-container {
-  max-width: 700px;
-  margin: 40px auto;
-  padding: 0 20px;
+  max-width: 760px;
+  margin: 30px auto;
+  padding: 0 16px;
 }
 
 /* --- THANH NAVBAR PHONG CÁCH DASHBOARD LẬP TRÌNH --- */
@@ -35,21 +35,21 @@ body {
   align-items: center;
   background: var(--card-bg);
   border: 1px solid var(--border-color);
-  padding: 14px 20px;
-  border-radius: 8px;
-  margin-bottom: 24px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+  padding: 12px 18px;
+  border-radius: 10px;
+  margin-bottom: 20px;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.4);
 }
 
 .nav-links {
   display: flex;
-  gap: 10px;
+  gap: 8px;
 }
 
 .nav-link {
   text-decoration: none;
   color: var(--text-muted);
-  font-weight: 500;
+  font-weight: 600;
   font-size: 13px;
   padding: 6px 12px;
   border-radius: 6px;
@@ -57,18 +57,18 @@ body {
   font-family: var(--font-mono);
 }
 
-.nav-link:hover {
+.nav-link:hover, .nav-link.active {
   color: var(--accent-blue);
-  background: rgba(88, 166, 255, 0.1);
+  background: rgba(88, 166, 255, 0.12);
 }
 
 /* --- KHUNG CHỨA NỘI DUNG (CARD BOX) --- */
 .card-box {
   background: var(--card-bg);
   border: 1px solid var(--border-color);
-  border-radius: 8px;
-  padding: 28px;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+  border-radius: 12px;
+  padding: 26px;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.5);
   animation: fadeIn 0.25s ease-in-out;
 }
 
@@ -82,24 +82,108 @@ h1, h2, h3, h4 {
   font-family: var(--font-mono);
 }
 
-/* --- FORM & INPUT PHONG CÁCH IDE --- */
-.input-group {
-  display: flex;
+/* --- LIVE METRICS GRID --- */
+.metrics-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
   gap: 10px;
-  margin-bottom: 20px;
+  margin-bottom: 12px;
 }
 
+.metric-card {
+  background: var(--bg-main, #0d1117);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  transition: transform 0.2s ease, border-color 0.2s ease;
+}
+
+.metric-card:hover {
+  transform: translateY(-2px);
+  border-color: var(--accent-blue);
+}
+
+.metric-label {
+  font-size: 10.5px;
+  color: var(--text-muted);
+  font-family: var(--font-mono);
+  letter-spacing: 0.5px;
+  margin-bottom: 4px;
+}
+
+.metric-val {
+  font-size: 20px;
+  font-weight: 700;
+  font-family: var(--font-mono);
+  color: var(--text-main);
+}
+
+.text-green { color: var(--accent-green) !important; }
+.text-orange { color: var(--accent-orange) !important; }
+.text-red { color: var(--accent-red) !important; }
+.text-blue { color: var(--accent-blue) !important; }
+
+.progress-bar-container {
+  width: 100%;
+  height: 8px;
+  background: rgba(255, 255, 255, 0.06);
+  border-radius: 4px;
+  overflow: hidden;
+  margin-bottom: 22px;
+  border: 1px solid var(--border-color);
+}
+
+.progress-bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--accent-blue), var(--accent-green));
+  transition: width 0.4s ease;
+  box-shadow: 0 0 8px var(--accent-green);
+}
+
+/* --- BATCH ACTION BAR --- */
+.batch-bar {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-bottom: 18px;
+  padding-bottom: 14px;
+  border-bottom: 1px dashed var(--border-color);
+}
+
+.batch-btn {
+  background: rgba(255, 255, 255, 0.04);
+  color: var(--text-muted);
+  border: 1px solid var(--border-color);
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-family: var(--font-mono);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.batch-btn:hover {
+  background: rgba(88, 166, 255, 0.12);
+  color: var(--accent-blue);
+  border-color: var(--accent-blue);
+}
+
+/* --- FORM & INPUT PHONG CÁCH IDE --- */
 .custom-input {
-  flex: 1;
   padding: 10px 14px;
   background: #0d1117;
   border: 1px solid var(--border-color);
   border-radius: 6px;
   color: #ffffff;
-  font-size: 14px;
+  font-size: 13.5px;
   font-family: var(--font-mono);
   outline: none;
-  transition: border-color 0.2s;
+  transition: border-color 0.2s, box-shadow 0.2s;
 }
 
 .custom-input:focus {
@@ -116,7 +200,7 @@ h1, h2, h3, h4 {
   font-weight: 600;
   cursor: pointer;
   font-family: var(--font-mono);
-  transition: background 0.2s;
+  transition: background 0.2s, transform 0.15s;
 }
 
 .btn-primary:hover {
@@ -124,25 +208,6 @@ h1, h2, h3, h4 {
 }
 
 /* --- DANH SÁCH TASK VÀ TAB --- */
-
-.admin-tabs {
-  display: flex;
-  gap: 8px;
-  margin-bottom: 20px;
-  border-bottom: 1px solid var(--border-color);
-  padding-bottom: 12px;
-}
-@media (max-width: 768px) {
-  .admin-tabs {
-    flex-direction: column; /* Chuyển thành xếp dọc thành cột */
-  }
-  
-  .admin-tabs .tab-btn {
-    width: 100%; /* Tràn rộng 100% màn hình điện thoại để dễ bấm */
-  }
-}
-  
-
 .tab-btn {
   background: #21262d;
   color: var(--text-main);
@@ -151,7 +216,7 @@ h1, h2, h3, h4 {
   border-radius: 6px;
   cursor: pointer;
   font-family: var(--font-mono);
-  font-size: 13px;
+  font-size: 12.5px;
   transition: all 0.2s;
 }
 
@@ -160,20 +225,91 @@ h1, h2, h3, h4 {
   border-color: var(--accent-blue);
 }
 
+.tab-btn.active {
+  background: var(--accent-blue) !important;
+  color: white !important;
+  border-color: var(--accent-blue) !important;
+}
+
 .task-item {
-  background: #0d1117;
+  background: var(--bg-main, #0d1117);
   border: 1px solid var(--border-color);
-  padding: 12px 16px;
-  margin-bottom: 8px;
-  border-radius: 6px;
+  padding: 12px 14px;
+  margin-bottom: 10px;
+  border-radius: 8px;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  transition: border-color 0.2s;
+  gap: 12px;
+  animation: taskSlideIn 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
 .task-item:hover {
   border-color: var(--accent-blue);
+  transform: translateX(3px);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+}
+
+.task-item.is-completed {
+  opacity: 0.75;
+  background: rgba(0, 0, 0, 0.2);
+}
+
+/* Custom Checkbox */
+.task-checkbox {
+  width: 18px;
+  height: 18px;
+  border-radius: 4px;
+  border: 1.5px solid var(--border-color);
+  background: rgba(255, 255, 255, 0.05);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: all 0.2s ease;
+}
+
+.task-checkbox:hover {
+  border-color: var(--accent-green);
+  box-shadow: 0 0 8px rgba(63, 185, 80, 0.4);
+}
+
+.task-checkbox.checked {
+  background: var(--accent-green);
+  border-color: var(--accent-green);
+}
+
+.task-checkbox.checked::after {
+  content: '✓';
+  color: white;
+  font-size: 12px;
+  font-weight: 800;
+}
+
+/* Action Icon Buttons */
+.action-icon-btn {
+  background: transparent;
+  border: 1px solid transparent;
+  color: var(--text-muted);
+  padding: 4px 6px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 13px;
+  transition: all 0.2s ease;
+}
+
+.action-icon-btn:hover {
+  background: rgba(255, 255, 255, 0.08);
+  color: var(--text-main);
+  border-color: var(--border-color);
+}
+
+.action-icon-btn.btn-delete:hover {
+  background: rgba(248, 81, 73, 0.18);
+  color: var(--accent-red);
+  border-color: rgba(248, 81, 73, 0.4);
 }
 
 .del-btn {
@@ -193,7 +329,33 @@ h1, h2, h3, h4 {
   color: white;
 }
 
-/* --- DYNAMIC INTERACTIVE ANIMATIONS --- */
+/* Due Date Badges */
+.due-badge {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  padding: 2px 6px;
+  border-radius: 4px;
+}
+
+.due-overdue {
+  color: var(--accent-red);
+  background: rgba(248, 81, 73, 0.12);
+  border: 1px solid rgba(248, 81, 73, 0.4);
+  font-weight: 700;
+}
+
+.due-today {
+  color: var(--accent-orange);
+  background: rgba(210, 153, 34, 0.12);
+  border: 1px solid rgba(210, 153, 34, 0.4);
+  font-weight: 700;
+}
+
+.due-future {
+  color: var(--text-muted);
+}
+
+/* Animations */
 @keyframes taskSlideIn {
   from {
     opacity: 0;
@@ -203,17 +365,6 @@ h1, h2, h3, h4 {
     opacity: 1;
     transform: translateY(0) scale(1);
   }
-}
-
-.task-item {
-  animation: taskSlideIn 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-  transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
-}
-
-.task-item:hover {
-  border-color: var(--accent-blue);
-  transform: translateX(4px);
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
 }
 
 @keyframes pulseHigh {
@@ -231,12 +382,53 @@ h1, h2, h3, h4 {
   display: inline-block;
 }
 
-.btn-primary, .tab-btn, .del-btn {
-  transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+/* Toast Notification */
+.toast-container {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 10000;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  pointer-events: none;
 }
 
-.btn-primary:active, .tab-btn:active, .del-btn:active {
-  transform: scale(0.95);
+.toast-msg {
+  pointer-events: auto;
+  background: #161b22;
+  border: 1px solid var(--border-color);
+  color: var(--text-main);
+  padding: 10px 16px;
+  border-radius: 8px;
+  font-size: 13px;
+  font-family: var(--font-mono);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.5);
+  animation: toastSlideIn 0.25s ease-out;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.toast-msg.hide {
+  opacity: 0;
+  transform: translateX(20px);
+}
+
+.toast-success { border-left: 4px solid var(--accent-green); }
+.toast-error { border-left: 4px solid var(--accent-red); }
+.toast-info { border-left: 4px solid var(--accent-blue); }
+
+@keyframes toastSlideIn {
+  from {
+    opacity: 0;
+    transform: translateX(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
 }
 
 /* Hiệu ứng pháo hoa mini confetti */
@@ -261,3 +453,15 @@ h1, h2, h3, h4 {
   }
 }
 
+@media (max-width: 600px) {
+  .app-container {
+    padding: 0 10px;
+    margin: 15px auto;
+  }
+  .card-box {
+    padding: 18px 14px;
+  }
+  .metrics-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
