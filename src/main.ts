@@ -58,6 +58,26 @@ const themes: Record<string, Record<string, string>> = {
   }
 };
 
+// Hiệu ứng pháo hoa mini kỷ niệm khi hoàn thành công việc
+function fireMiniConfetti(x: number, y: number) {
+  const colors = ['#58a6ff', '#2ea043', '#f85149', '#d29922', '#a371f7'];
+  for (let i = 0; i < 22; i++) {
+    const el = document.createElement('div');
+    el.className = 'confetti-particle';
+    el.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+    el.style.left = `${x}px`;
+    el.style.top = `${y}px`;
+    const angle = Math.random() * Math.PI * 2;
+    const velocity = Math.random() * 65 + 20;
+    const destX = Math.cos(angle) * velocity;
+    const destY = Math.sin(angle) * velocity;
+    el.style.setProperty('--dx', `${destX}px`);
+    el.style.setProperty('--dy', `${destY}px`);
+    document.body.appendChild(el);
+    setTimeout(() => el.remove(), 700);
+  }
+}
+
 function applyTheme(themeName: string) {
   const selectedTheme = themes[themeName] || themes['github'];
   const root = document.documentElement;
@@ -224,7 +244,7 @@ async function renderHomePage() {
 
     listEl.innerHTML = filtered.map(t => {
       let priorityBadge = '';
-      if (t.priority === 'high') priorityBadge = '<span style="color: var(--accent-red); font-size: 11px; border: 1px solid var(--accent-red); padding: 2px 6px; border-radius: 4px; font-family: var(--font-mono);">HIGH</span>';
+      if (t.priority === 'high') priorityBadge = '<span class="badge-high" style="color: var(--accent-red); font-size: 11px; border: 1px solid var(--accent-red); padding: 2px 6px; border-radius: 4px; font-family: var(--font-mono);">HIGH</span>';
       else if (t.priority === 'medium') priorityBadge = '<span style="color: var(--accent-orange); font-size: 11px; border: 1px solid var(--accent-orange); padding: 2px 6px; border-radius: 4px; font-family: var(--font-mono);">MED</span>';
       else priorityBadge = '<span style="color: var(--accent-green); font-size: 11px; border: 1px solid var(--accent-green); padding: 2px 6px; border-radius: 4px; font-family: var(--font-mono);">LOW</span>';
 
@@ -252,6 +272,12 @@ async function renderHomePage() {
         const targetTodo = allTodos.find(t => t.id.toString() === id);
         if (!targetTodo) return;
 
+        const nextCompleted = !targetTodo.completed;
+        const mouseEv = e as MouseEvent;
+        if (nextCompleted && mouseEv.clientX) {
+          fireMiniConfetti(mouseEv.clientX, mouseEv.clientY);
+        }
+
         const token = localStorage.getItem('accessToken');
         await fetch(`${API_URL}/todos/${id}/`, {
           method: 'PATCH',
@@ -259,7 +285,7 @@ async function renderHomePage() {
             'Content-Type': 'application/json',
             'Authorization': `Bearer ${token}`
           },
-          body: JSON.stringify({ completed: !targetTodo.completed })
+          body: JSON.stringify({ completed: nextCompleted })
         });
         await fetchTodosAndRender();
       });
