@@ -1,6 +1,6 @@
 import './style.css'
 
-const API_URL = 'https://Phatne.pythonanywhere.com/api'; // Thay đổi URL API của bạn tại đây
+const API_URL = 'https://my-portfolio-fullstack-a2m8.onrender.com/api'; // Render backend live API
 
 interface Todo {
   id: number;

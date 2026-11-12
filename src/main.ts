@@ -1,6 +1,6 @@
 import './style.css'
 
-const API_URL = 'https://Phatne.pythonanywhere.com/api'; // Thay đổi URL API của bạn tại đây
+const API_URL = 'https://my-portfolio-fullstack-a2m8.onrender.com/api'; // Render backend live API
 
 interface Todo {
   id: number;
@@ -69,6 +69,31 @@ function applyTheme(themeName: string) {
 
 const savedTheme = localStorage.getItem('appTheme') || 'github';
 applyTheme(savedTheme);
+
+// Tự động đăng nhập tài khoản demo khi mở từ trang Portfolio (nếu chưa đăng nhập)
+async function autoLoginDemo() {
+  if (!localStorage.getItem('accessToken')) {
+    try {
+      const response = await fetch(`${API_URL}/token/`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          username: 'demo',
+          password: 'demo123456'
+        })
+      });
+      const data = await response.json();
+      if (data.access) {
+        localStorage.setItem('accessToken', data.access);
+        localStorage.setItem('isLoggedIn', 'true');
+        window.location.reload(); // Tải lại để app nhận diện và vào thẳng Dashboard
+      }
+    } catch (err) {
+      console.error('Lỗi tự động đăng nhập demo:', err);
+    }
+  }
+}
+autoLoginDemo();
 
 function renderLayout() {
   const appTitle = localStorage.getItem('appTitle') || 'IT_Dashboard // Todo-Manager';
@@ -505,7 +530,7 @@ async function renderAdminPage() {
         btn.addEventListener('click', async (e) => {
           const id = (e.target as HTMLElement).getAttribute('data-id');
           if (confirm('Xác nhận xóa bản ghi này khỏi Database?')) {
-            await fetch(`${API_URL}todos/${id}/`, { 
+            await fetch(`${API_URL}/todos/${id}/`, { 
               method: 'DELETE',
               headers: { 'Authorization': `Bearer ${token}` }
             });
@@ -564,7 +589,7 @@ async function renderAdminPage() {
 }
 
 function router() {
-  const hash = window.location.hash || '#/about';
+  const hash = window.location.hash || '#/'; // ĐÃ SỬA: Mặc định trỏ về trang chủ thay vì #/about
   if (hash === '#/about') renderAboutPage();
   else if (hash === '#/admin') renderAdminPage();
   else renderHomePage();
